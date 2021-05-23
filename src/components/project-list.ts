@@ -1,9 +1,9 @@
-import { DragTarget } from "../models/drag-drop.js";
-import { Project, ProjectStatus } from "../models/project.js";
-import Component from "./base-component.js";
-import { autobind } from "../decorators/autobind.js";
-import { projectState } from "../state/project-state.js";
-import { ProjectItem } from "./project-item.js";
+import { DragTarget } from "../models/drag-drop";
+import { Project, ProjectStatus } from "../models/project";
+import Component from "./base-component";
+import { autobind } from "../decorators/autobind";
+import { projectState } from "../state/project-state";
+import { ProjectItem } from "./project-item";
 
 // ProjectList Class
 export class ProjectList
@@ -18,16 +18,6 @@ export class ProjectList
 
         this.configure();
         this.renderContent();
-    }
-
-    renderProjects() {
-        const listEl = document.getElementById(
-            `${this.type}-projects-list`
-        )! as HTMLUListElement;
-        listEl.innerHTML = "";
-        for (const prjItem of this.assignedProjects) {
-            new ProjectItem(this.element.querySelector("ul")!.id, prjItem);
-        }
     }
 
     @autobind
@@ -80,6 +70,16 @@ export class ProjectList
         const listId = `${this.type}-projects-list`;
         this.element.querySelector("ul")!.id = listId;
         this.element.querySelector("h2")!.textContent =
-            this.type.toUpperCase() + "PROJECTS";
+            this.type.toUpperCase() + " PROJECTS";
+    }
+
+    private renderProjects() {
+        const listEl = document.getElementById(
+            `${this.type}-projects-list`
+        )! as HTMLUListElement;
+        listEl.innerHTML = "";
+        for (const prjItem of this.assignedProjects) {
+            new ProjectItem(this.element.querySelector("ul")!.id, prjItem);
+        }
     }
 }

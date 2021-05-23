@@ -1,10 +1,10 @@
-import Component from "./base-component.js";
-import * as Validation from "../util/validation.js";
-import { autobind } from "../decorators/autobind.js";
-import { projectState } from "../state/project-state.js";
+import Cmp from "./base-component";
+import * as Validation from "../util/validation";
+import { autobind as Autobind } from "../decorators/autobind";
+import { projectState } from "../state/project-state";
 
 // ProjectInput Class
-export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
+export class ProjectInput extends Cmp<HTMLDivElement, HTMLFormElement> {
     titleInputElement: HTMLInputElement;
     descriptionInputElement: HTMLInputElement;
     peopleInputElement: HTMLInputElement;
@@ -14,17 +14,20 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
         this.titleInputElement = this.element.querySelector(
             "#title"
         ) as HTMLInputElement;
-
         this.descriptionInputElement = this.element.querySelector(
             "#description"
         ) as HTMLInputElement;
-
         this.peopleInputElement = this.element.querySelector(
             "#people"
         ) as HTMLInputElement;
-
         this.configure();
     }
+
+    configure() {
+        this.element.addEventListener("submit", this.submitHandler);
+    }
+
+    renderContent() {}
 
     private gatherUserInput(): [string, string, number] | void {
         const enteredTitle = this.titleInputElement.value;
@@ -35,23 +38,21 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
             value: enteredTitle,
             required: true,
         };
-
         const descriptionValidatable: Validation.Validatable = {
             value: enteredDescription,
             required: true,
             minLength: 5,
         };
-
         const peopleValidatable: Validation.Validatable = {
-            value: enteredPeople,
+            value: +enteredPeople,
             required: true,
             min: 1,
             max: 5,
         };
 
         if (
-            !Validation.validate(titleValidatable) &&
-            !Validation.validate(descriptionValidatable) &&
+            !Validation.validate(titleValidatable) ||
+            !Validation.validate(descriptionValidatable) ||
             !Validation.validate(peopleValidatable)
         ) {
             alert("Invalid input, please try again!");
@@ -61,19 +62,13 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
         }
     }
 
-    configure() {
-        this.element.addEventListener("submit", this.submitHandler);
-    }
-
-    renderContent() {}
-
     private clearInputs() {
         this.titleInputElement.value = "";
         this.descriptionInputElement.value = "";
         this.peopleInputElement.value = "";
     }
 
-    @autobind
+    @Autobind
     private submitHandler(event: Event) {
         event.preventDefault();
         const userInput = this.gatherUserInput();

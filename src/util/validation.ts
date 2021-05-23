@@ -22,7 +22,6 @@ export function validate(validatableInput: Validatable) {
             isValid &&
             validatableInput.value.length >= validatableInput.minLength;
     }
-
     if (
         validatableInput.maxLength != null &&
         typeof validatableInput.value === "string"

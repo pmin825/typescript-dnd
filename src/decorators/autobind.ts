@@ -8,6 +8,5 @@ export function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
             return boundFn;
         },
     };
-
     return adjDescriptor;
 }
